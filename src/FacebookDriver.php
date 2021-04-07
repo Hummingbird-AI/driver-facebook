@@ -27,10 +27,12 @@ use BotMan\Drivers\Facebook\Extensions\ButtonTemplate;
 use BotMan\Drivers\Facebook\Extensions\GenericTemplate;
 use BotMan\Drivers\Facebook\Extensions\ListTemplate;
 use BotMan\Drivers\Facebook\Extensions\MediaTemplate;
+use BotMan\Drivers\Facebook\Extensions\OneTimeNotificationRequest;
 use BotMan\Drivers\Facebook\Extensions\OpenGraphTemplate;
 use BotMan\Drivers\Facebook\Extensions\ReceiptTemplate;
 use BotMan\Drivers\Facebook\Extensions\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,6 +72,7 @@ class FacebookDriver extends HttpDriver implements VerifiesService
         ReceiptTemplate::class,
         MediaTemplate::class,
         OpenGraphTemplate::class,
+        OneTimeNotificationRequest::class,
     ];
 
     private $supportedAttachments = [
