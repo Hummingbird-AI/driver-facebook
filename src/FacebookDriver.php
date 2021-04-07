@@ -42,6 +42,12 @@ class FacebookDriver extends HttpDriver implements VerifiesService
     const TYPE_RESPONSE = 'RESPONSE';
     const TYPE_UPDATE = 'UPDATE';
     const TYPE_MESSAGE_TAG = 'MESSAGE_TAG';
+    const MESSAGE_TAG_CONFIRMED_EVENT_UPDATE = 'CONFIRMED_EVENT_UPDATE';
+    const MESSAGE_TAG_POST_PURCHASE_UPDATE = 'POST_PURCHASE_UPDATE';
+    const MESSAGE_TAG_ACCOUNT_UPDATE = 'ACCOUNT_UPDATE';
+    const MESSAGE_TAG_HUMAN_AGENT = 'HUMAN_AGENT';
+
+    public static $message_tag;
 
     /** @var string */
     protected $signature;
@@ -374,12 +380,16 @@ class FacebookDriver extends HttpDriver implements VerifiesService
             $recipient = ['id' => $id];
         }
         $parameters = array_merge_recursive([
-            'messaging_type' => self::TYPE_RESPONSE,
+            'messaging_type' => !empty(static::$message_tag) ? self::TYPE_MESSAGE_TAG : self::TYPE_RESPONSE,
             'recipient' => $recipient,
             'message' => [
                 'text' => $message,
             ],
         ], $additionalParameters);
+
+        if (!empty(static::$message_tag)) {
+            $parameters['tag'] = static::$message_tag;
+        }
         /*
          * If we send a Question with buttons, ignore
          * the text and append the question.
@@ -575,5 +585,14 @@ class FacebookDriver extends HttpDriver implements VerifiesService
             ],
             'target_app_id' => self::HANDOVER_INBOX_PAGE_ID,
         ]);
+    }
+
+    public static function setMessageTag($messageTag = '')
+    {
+        if (in_array($messageTag, [self::MESSAGE_TAG_ACCOUNT_UPDATE, self::MESSAGE_TAG_CONFIRMED_EVENT_UPDATE, self::MESSAGE_TAG_POST_PURCHASE_UPDATE, self::MESSAGE_TAG_HUMAN_AGENT])) {
+            static::$message_tag = $messageTag;
+        } else {
+            static::$message_tag = '';
+        }
     }
 }
