@@ -1,7 +1,7 @@
 {
-    "name": "botman/driver-facebook",
+    "name": "enkaizen/driver-facebook",
     "license": "MIT",
-    "description": "Facebook Messenger driver for BotMan",
+    "description": "Facebook Messenger driver for BotMan by Enkaizen.com",
     "keywords": [
         "Bot",
         "BotMan",
