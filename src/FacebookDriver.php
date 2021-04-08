@@ -378,10 +378,12 @@ class FacebookDriver extends HttpDriver implements VerifiesService
             }
         } else {
             $messagingDetails = $this->event->get('messaging')[0];
-            $id = $messagingDetails['sender']['id'] ?? null;
+            $sid = $messagingDetails['sender']['id'] ?? null;
+            $id = !empty($matchingMessage->getSender()) ? $matchingMessage->getSender() : $sid;
 
             $recipient = ['id' => $id];
         }
+
         $parameters = array_merge_recursive([
             'messaging_type' => !empty(static::$message_tag) ? self::TYPE_MESSAGE_TAG : self::TYPE_RESPONSE,
             'recipient' => $recipient,
@@ -419,7 +421,6 @@ class FacebookDriver extends HttpDriver implements VerifiesService
         }
 
         $parameters['access_token'] = $this->config->get('token');
-
         return $parameters;
     }
 
