@@ -10,7 +10,6 @@ use BotMan\BotMan\Messages\Attachments\Audio;
 use BotMan\BotMan\Messages\Attachments\File;
 use BotMan\BotMan\Messages\Attachments\Image;
 use BotMan\BotMan\Messages\Attachments\Video;
-use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Incoming\IncomingMessage;
 use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 use BotMan\BotMan\Messages\Outgoing\Question;
@@ -494,8 +493,7 @@ class FacebookDriver extends HttpDriver implements VerifiesService
         if (isset($messagingDetails['sender']['community'])) {
             $fields = 'first_name,last_name,email,title,department,employee_number,primary_phone,primary_address,picture,link,locale,name,name_format,updated_time';
         }
-        $id = $messagingDetails['sender']['id'] ?? null;
-
+        $id = !empty($matchingMessage->getSender())?$matchingMessage->getSender():$messagingDetails['sender']['id'] ?? null;
         $userInfoData = $this->http->get($this->facebookProfileEndpoint . $id . '?fields=' . $fields . '&access_token=' . $this->config->get('token'));
 
         $this->throwExceptionIfResponseNotOk($userInfoData);
