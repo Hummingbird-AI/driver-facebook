@@ -1,7 +1,7 @@
 {
-    "name": "enkaizen/driver-facebook",
+    "name": "hummingbird/driver-facebook",
     "license": "MIT",
-    "description": "Facebook Messenger driver for BotMan by Enkaizen.com",
+    "description": "Upgraded v10 Facebook Messenger driver for BotMan by botman.io ",
     "keywords": [
         "Bot",
         "BotMan",
