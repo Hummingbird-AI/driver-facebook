@@ -375,8 +375,18 @@ class FacebookDriver extends HttpDriver implements VerifiesService
             $messagingDetails = $this->event->get('messaging')[0];
             $sid = $messagingDetails['sender']['id'] ?? null;
             $id = !empty($matchingMessage->getSender()) ? $matchingMessage->getSender() : $sid;
-
-            $recipient = ['id' => $id];
+            //CODE CHANGE BY JONATHAN 6 NOV 2020
+            //THIS CODE CHANGE IS TO ALLOW SENDING MESSAGE TO CUSTOMER_CHAT_PLUGIN via user_ref
+            if (
+                !is_null($messagingDetails) &&
+                array_key_exists('sender', $messagingDetails) &&
+                array_key_exists('user_ref', $messagingDetails['sender'])
+            ) {
+                //Reply to Customer Chat Plugin
+                $recipient = ['user_ref' =>$id];
+            } else {
+                $recipient = ['id' => $id];
+            }
         }
 
         $parameters = array_merge_recursive([
